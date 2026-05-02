@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    # This maps port 8000 on your Windows machine to port 8000 inside the Docker container
+    ports:
+      - "8000:8000"
+    # Volumes link a folder on your computer to a folder in the container.
+    # By mapping './:/app', any changes you make to the code on your Windows computer 
+    # will instantly show up inside the container without needing to rebuild the image!
+    volumes:
+      - ./:/app
+    # The command to start the server. The --reload flag tells uvicorn to restart
+    # automatically whenever it sees a file change (great for development).
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
