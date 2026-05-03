@@ -11,6 +11,28 @@ services:
     # will instantly show up inside the container without needing to rebuild the image!
     volumes:
       - ./:/app
+    # Load environment variables from the .env file
+    env_file:
+      - .env
+    # Ensure the database starts before the web server
+    depends_on:
+      - db
     # The command to start the server. The --reload flag tells uvicorn to restart
     # automatically whenever it sees a file change (great for development).
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: mysql:8.0
+    restart: always
+    # Read the same environment variables to configure the database
+    env_file:
+      - .env
+    ports:
+      # We changed this from 3306:3306 to 3307:3306 because your local machine 
+      # already has something using port 3306.
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
