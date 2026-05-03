@@ -3,7 +3,9 @@ from contextlib import asynccontextmanager
 from app.db.base import Base
 from app.db.session import engine
 from app.features.users.models import User 
+from app.features.bookings.models import Booking
 from app.features.auth.router import router as auth_router
+from app.features.bookings.router import router as bookings_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,8 +20,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Local Service Booking API", lifespan=lifespan)
 
-# Wire our new Authentication feature into the main application
+# Wire our features into the main application
 app.include_router(auth_router)
+app.include_router(bookings_router)
 
 @app.get("/")
 def read_root():
