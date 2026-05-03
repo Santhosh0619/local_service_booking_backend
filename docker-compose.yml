@@ -28,7 +28,9 @@ services:
     env_file:
       - .env
     ports:
-      - "3306:3306"
+      # We changed this from 3306:3306 to 3307:3306 because your local machine 
+      # already has something using port 3306.
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
 
